@@ -494,7 +494,7 @@ function wpcrmOpportunityOptions() {
 	$slug = preg_replace("/[^A-Za-z0-9]/",'',strtolower($title));
 
 	$projectFromOpportunity = "//" . sanitize_text_field( $_SERVER['HTTP_HOST'] ) . sanitize_text_field( $_SERVER['REQUEST_URI'] ) . '&wpcrm-system-action=new-project-from-opportunity';
-	echo WPCRM_SAVE_CHANGES;
+	echo __( 'Save changes before clicking below.', 'wp-crm-system' );
 	echo '<ul>';
 	echo '<li><a class="button" href="' . esc_url( $projectFromOpportunity ) . '">' . __( 'Create Project From Opportunity', 'wp-crm-system' ) . '</a></li>';
 	echo '</ul>';
@@ -996,13 +996,13 @@ $defaultFields = wpcrm_system_fields();
 								echo '<select id="' . '_wpcrm_' . $defaultField[ 'name' ] . '-input" style="display:none;" class="wp-crm-system-searchable" name="' . '_wpcrm_' . $defaultField[ 'name' ] . '">';
 								echo '<option value="" ' . selected( $selection, '' ) . '>Not Assigned</option>';
 								echo '<option value="do not show" ' . selected( $selection, 'do not show' ) . '>Not Applicable</option>';
-								foreach($orgs as $org) {
-									$orgaddress = ( true == get_option( 'wpcrm_system_show_org_address' ) && '' != get_post_meta( $org->ID, '_wpcrm_organization-address1', true ) ) ? ' [' . get_post_meta( $org->ID, '_wpcrm_organization-address1', true ) . ']' : '';
-									echo '<option value="' . $org->ID . '"' . selected( $selection, $org->ID ) . '>' . get_the_title($org->ID) . $orgaddress . '</option>';
+								foreach( $orgs as $org ) {
+									$orgaddress = ( true == get_option( 'wpcrm_system_show_org_address' ) && '' != get_post_meta( $org->ID, '_wpcrm_organization-address1', true ) ) ? ' [' . esc_html( get_post_meta( $org->ID, '_wpcrm_organization-address1', true ) ) . ']' : '';
+									echo '<option value="' . $org->ID . '"' . selected( $selection, $org->ID ) . '>' . esc_html( get_the_title( $org->ID ) ) . $orgaddress . '</option>';
 								}
 								echo '</select>';
 							} else {
-							echo '<a href="' . admin_url('edit.php?post_type=wpcrm-organization') . '">';
+							echo '<a href="' . admin_url( 'edit.php?post_type=wpcrm-organization' ) . '">';
 							_e('Please create an organization first.','wp-crm-system');
 							echo '</a>';
 						}
@@ -1174,8 +1174,8 @@ $defaultFields = wpcrm_system_fields();
 							} else {
 								$date = '';
 							}
-							$before = $defaultField[ 'before' ];
-							$after = $defaultField[ 'after' ];
+							$before	= $defaultField[ 'before' ];
+							$after	= $defaultField[ 'after' ];
 							//Datepicker
 							?>
 								<script type="text/javascript">
@@ -1198,11 +1198,11 @@ $defaultFields = wpcrm_system_fields();
 									echo '<div class="' .  $defaultField[ 'icon' ] . '" class="wp-crm-inline"></div>';
 								}
 								echo '<span id="' . '_wpcrm_' . $defaultField[ 'name' ] . '-text" style="display:inline">' . $date . '</span>';
-								echo '<input type="text" name="' . '_wpcrm_' . $defaultField[ 'name' ] . '" id="' . '_wpcrm_' . $defaultField[ 'name' ] . '-input" style="display:none;" class="datepicker" value="' . $date . '" placeholder="' . __($defaultField['placeholder'],'wp-crm-system') . '" />';
+								echo '<input type="text" name="' . '_wpcrm_' . $defaultField[ 'name' ] . '" id="' . '_wpcrm_' . $defaultField[ 'name' ] . '-input" style="display:none;" autocomplete="off" class="datepicker" value="' . $date . '" placeholder="' . __($defaultField['placeholder'],'wp-crm-system') . '" />';
 								echo '<span id="' . '_wpcrm_' . $defaultField[ 'name' ] . '-edit" style="display:none;" class="dashicons dashicons-edit wpcrm-dashicons" onclick=editField("' . '_wpcrm_' . $defaultField[ 'name' ] . '")></span>';
 							} else {
 								echo '<label for="' . '_wpcrm_' . $defaultField[ 'name' ] .'"><strong>' . __($defaultField[ 'title' ],'wp-crm-system') . '</strong></label>';
-								echo '<input type="text" name="' . '_wpcrm_' . $defaultField[ 'name' ] . '" id="' . '_wpcrm_' . $defaultField[ 'name' ] . '" class="datepicker" value="' . $date . '" placeholder="' . __($defaultField['placeholder'],'wp-crm-system') . '" />';
+								echo '<input type="text" name="' . '_wpcrm_' . $defaultField[ 'name' ] . '" id="' . '_wpcrm_' . $defaultField[ 'name' ] . '" autocomplete="off" class="datepicker" value="' . $date . '" placeholder="' . __($defaultField['placeholder'],'wp-crm-system') . '" />';
 								echo '<span id="' . '_wpcrm_' . $defaultField[ 'name' ] . '-edit"></span>';
 							}
 							echo '</div>';
